@@ -62,7 +62,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 ### 5. SLURM users
 
-Before running any shell scripts, make sure to update the SLURM directives at the top of each `.sh` file to match your system configuration.
+Before running any shell scripts, make sure to update the SLURM directives at the top of each `.sh` file to match your system configuration. All experiments can be run with 2 A100/H100 GPUs. Other setups may require refactoring and/or changing model sizes.
 
 
 ## 📄 Citation
