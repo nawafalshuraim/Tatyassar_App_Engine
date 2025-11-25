@@ -1,45 +1,22 @@
-"""
- NLP ENGINE 
-------------------------
-This module provides:
-    text cleaning
-    sentence splitting
-    transformer embeddings
-    semantic similarity
-    semantic emotion vectors (learnable)
-    sentence/document encoding
-    NO lexicons
-    NO keyword matching
-    fully embedding-based semantic NLP
-
-"""
 
 import re
-from typing import List, Dict
+from typing import List, Dict #for type hints
 import torch
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel #for MiniLM transformer
 
-
-# -------------------------------------------------------
 # DEVICE: On Apple Silicon (M1, M2, M3, M4), PyTorch can use the Apple GPU
-# This makes NLP/ML much faster than CPU
-#M PS = “Apple’s version of CUDA”
-# -------------------------------------------------------
-
+# This makes NLP much faster than CPU
+# MPS = “Apple’s version of CUDA”
 def get_device():
+
     if torch.backends.mps.is_available():
         return torch.device("mps")
     return torch.device("cpu")
 
 
-# -------------------------------------------------------
 # CLEANING
-# -------------------------------------------------------
-
 def clean_text(text: str) -> str:
-    """
-    Normalizes therapy text for semantic processing.
-    """
+    
     if not isinstance(text, str):
         return ""
 
@@ -49,14 +26,9 @@ def clean_text(text: str) -> str:
     return text
 
 
-# -------------------------------------------------------
-# SENTENCE SPLITTING
-# -------------------------------------------------------
-
+# SENTENCE SPLITTING FOR THE DATASET (LATER TO BE USED)
 def split_sentences(text: str) -> List[str]:
-    """
-    Splits therapy dialogue into meaningful sentences.
-    """
+
     text = clean_text(text)
     parts = re.split(
         r'(?<=[\.\!\?])\s+|(?=Therapist:)|(?=Client:)',
@@ -65,17 +37,8 @@ def split_sentences(text: str) -> List[str]:
     return [p.strip() for p in parts if len(p.strip()) > 1]
 
 
-# -------------------------------------------------------
-# TRANSFORMER MODEL
-# -------------------------------------------------------
-
+# TRANSFORMER MODEL (PRODUCES EMBEDDINGS CAPTURING MEANING/UNDERSTANDING ONLY/ NOT GENERATIVE/ ANSWER WHAT DOES THIS TEXT MEAN IN MATH FORM? OUTPUT: VECTOR OF 384 numbers)
 class NLPModel:
-    """
-    COMPLETE semantic model for embeddings & NLP tasks.
-    - Not generative (understanding-only)
-    - Produces embeddings capturing meaning
-    - Works on CPU/MPS
-    """
 
     def __init__(
         self,
@@ -87,14 +50,9 @@ class NLPModel:
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModel.from_pretrained(model_name).to(self.device)
 
-    # ---------------------------------------------------
     # EMBEDDINGS
-    # ---------------------------------------------------
-
     def encode(self, text: str) -> torch.Tensor:
-        """
-        Full document embedding (mean pooled).
-        """
+
         text = clean_text(text)
         tokens = self.tokenizer(
             text,
@@ -111,25 +69,18 @@ class NLPModel:
         return torch.stack([self.encode(s) for s in sentences])
 
 
-# -------------------------------------------------------
-# SEMANTIC SIMILARITY
-# -------------------------------------------------------
-
+# SEMANTIC SIMILARITY (1: same meaning, 0: different, -1: opposite)
 def cosine_similarity(a: torch.Tensor, b: torch.Tensor) -> float:
     return torch.nn.functional.cosine_similarity(a, b, dim=0).item()
 
 
-# -------------------------------------------------------
-# SEMANTIC EMOTION VECTORS (NO LEXICON)
-# -------------------------------------------------------
-
+# SEMANTIC EMOTION VECTORS (NO LEXICON BUT SEMANTIC ANCHOR)
 """""
 Later:
 - dataset expands them
 - classifier expands them
 - SEAL evolves them
-
-so we NEVER modify these manually again.
+so we never modify these manually again.
 """
 
 BASE_EMOTIONS = {
@@ -163,19 +114,4 @@ def semantic_emotion_scores(text: str, nlp: NLPModel) -> Dict[str, float]:
     return scores
 
 
-# -------------------------------------------------------
-# TEST
-# -------------------------------------------------------
 
-if __name__ == "__main__":
-    nlp = NLPModel()
-    text = "I fee likee I'm disapponteed. I can't braathe. My heart is racig."
-
-    print("\nCLEANED:")
-    print(clean_text(text))
-
-    print("\nSPLIT:")
-    print(split_sentences(text))
-
-    print("\nEMOTION SCORES:")
-    print(semantic_emotion_scores(text, nlp))

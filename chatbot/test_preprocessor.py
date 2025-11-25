@@ -1,9 +1,10 @@
 import torch
 from pathlib import Path
 import json
-
+from datetime import datetime
 from chatbot.preprocessor import NLPModel
 from chatbot.cue_classifier_model import CueClassifier
+from chatbot.local_llm import LocalEditModel
 
 
 def load_vocab(vocab_path):
@@ -33,34 +34,79 @@ if __name__ == "__main__":
     model.load_state_dict(torch.load(model_path, map_location="cpu"))
     model.eval()
 
-    print("\nCue Classifier ready!")
-    print("Type any text below and press Enter.\n")
+    # LOAD LOCAL LLM (Phi-3)
+    llm = LocalEditModel()
+
+    print("\TRAUMA CHATBOT READY")
+    print("Type a sentence (or 'exit'):\n")
 
     while True:
-        text = input("Your text: ")
+        user_text = input("You: ")
 
-        if text.strip() == "":
+        if user_text.lower().strip() == "exit":
+            break
+
+        if user_text.strip() == "":
             continue
 
-        # Get embedding
-        emb = nlp.encode(text).unsqueeze(0)  # shape [1, 384]
+        print("\n[INPUT TEXT]")
+        print(user_text)
+
+        # Encode text
+        emb = nlp.encode(user_text).unsqueeze(0)
 
         # Predict
         logits = model(emb)
         probs = torch.sigmoid(logits)[0]
 
-        print("\nProbabilities:")
-        for cue, p in zip(cues, probs):
-            print(f"{cue:20s}: {p.item():.4f}")
+        print("\n[PROBABILITIES]")
+        predicted_cues = []
 
-        print("\nPredicted cues (> 0.50):")
-        found = False
         for cue, p in zip(cues, probs):
+            print(f"{cue:22s}: {p.item():.4f}")
             if p.item() >= 0.50:
-                print(" -", cue)
-                found = True
+                predicted_cues.append(cue)
 
-        if not found:
-            print("No cue above threshold.")
+        print("\n[PREDICTED CUES]")
+        print(predicted_cues if predicted_cues else "None detected")
 
-        print("\n" + "-" * 50 + "\n")
+        print("\n[RUNNING PHI-3 SELF-EDIT (SEAL MODE)]\n")
+        #instruction for Phi-3
+        system = (
+            "You are an expert therapist + ML engineer. "
+            "Given a patient text, true cues, and model-predicted cues, "
+            "return ONE improved training example in JSON."
+        )
+
+        user = f"""
+text: "{user_text}"
+true_cues: {predicted_cues}
+model_predicted_cues: {predicted_cues}
+
+Return a JSON object with fields:
+{{"improved_text": "...", "correct_cues": [...]}}
+"""
+
+        out = llm.generate_edit(system, user)
+        print(out)
+
+        print("\n" + "-" * 60 + "\n")
+
+# Save Phi-3’s output to dataset
+try:
+    new_example = json.loads(out)
+
+    save_obj = {
+        "id": f"seal_{datetime.now().timestamp()}",
+        "input_text": new_example["improved_text"],
+        "true_cues": new_example["correct_cues"]
+    }
+
+    with open("seal_generated_examples.json", "a", encoding="utf-8") as f:
+        f.write(json.dumps(save_obj) + "\n")
+
+    print("SEAL example saved")
+
+except Exception as e:
+    print("Could not save SEAL output:", e)
+

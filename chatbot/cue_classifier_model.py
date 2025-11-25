@@ -1,8 +1,6 @@
 """
-Cue Classifier Model
---------------------
 A small MLP “Multi-Layer Perceptron.”
-It is the simplest form of a neural network that sit on top of MiniLM embeddings.
+It is the simplest form of a neural network that receive from MiniLM embeddings.
 This is a multi-label classifier:
     - each cue is an independent sigmoid output
     - loss = BCEWithLogitsLoss
@@ -15,15 +13,11 @@ import torch.nn as nn
 class CueClassifier(nn.Module):
     def __init__(
         self,
-        input_dim: int,
-        num_labels: int,
-        hidden_dim: int = 256,
-        dropout: float = 0.1,
+        input_dim: int, ## 384 from MiniLM embeddings
+        num_labels: int, #11 cues
+        hidden_dim: int = 256, #256 neurons inside
+        dropout: float = 0.1, #randomly turns off 10% to prevent memorization
     ):
-        """
-        input_dim  = dimension of MiniLM embeddings (usually 384)
-        num_labels = number of cue classes (11 in your dataset)
-        """
         super().__init__()
 
         self.net = nn.Sequential(
@@ -34,18 +28,13 @@ class CueClassifier(nn.Module):
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        x: tensor shaped [batch_size, input_dim]
-        returns: logits [batch_size, num_labels]
-        """
+   
         return self.net(x)
 
     @staticmethod
     def loss_fn(logits: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
-        """
-        Multi-label BCE loss (no softmax).
-        `targets` = 0/1 for each cue label.
-        """
+   
+        # Since many cues can exist at the same time we use BCEWithLogitsLoss
         return nn.BCEWithLogitsLoss()(logits, targets)
 
     @staticmethod
@@ -56,8 +45,12 @@ class CueClassifier(nn.Module):
         return torch.sigmoid(logits)
 
     @staticmethod
+    
     def predict_labels(logits: torch.Tensor, threshold: float = 0.5) -> torch.Tensor:
         """
+        why 0.5 ? Balanced for now
+        If probability ≥ 0.5 → predict cue present  
+        If probability < 0.5 → predict cue not present
         Convert logits to 0/1 predictions.
         """
         probs = torch.sigmoid(logits)

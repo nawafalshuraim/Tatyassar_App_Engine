@@ -1,10 +1,5 @@
 """
-Cue data utilities
-------------------
-Loads challenges.json + solutions.json and creates:
-    - CueVocab: mapping cue name <-> index
-    - CueExample: holds text + labels
-Used by the cue classifier training script.
+Bridge between dataset and neural network, prepares the data for ML.
 """
 
 from dataclasses import dataclass
@@ -13,15 +8,17 @@ from typing import Dict, List, Tuple
 import json
 
 
-# ------------- Data structures -------------
-
+# Data structures 
+"""
+Represents one row of training data.
+"""
 @dataclass
 class CueExample:
     example_id: str
+    # Client & Therapist
     text: str
     true_cues: List[str]
     label_indices: List[int]
-
 
 class CueVocab:
     """
@@ -43,8 +40,7 @@ class CueVocab:
         return len(self.cues)
 
 
-# ------------- JSON helpers -------------
-
+# JSON helpers 
 def _load_json(path: Path):
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
@@ -77,7 +73,7 @@ def build_cue_vocab(solutions_path: Path) -> CueVocab:
         cues = out.get("true_cues", [])
         all_cues.extend(cues)
 
-    # --- CLEANING LOGIC ---
+    # CLEANING LOGIC 
     cleaned = []
     for c in all_cues:
         c = c.strip()
@@ -103,7 +99,7 @@ def build_examples(
     cue_vocab: CueVocab | None = None,
 ) -> Tuple[List[CueExample], CueVocab]:
     """
-    Align challenges.json with solutions.json and create CueExample objects.
+    Align challenges.json with solutions.json and create raining objects - CueExample.
     """
     id_to_challenge = _build_id_to_challenge(challenges_path)
     id_to_solution = _build_id_to_solution(solutions_path)
@@ -136,7 +132,7 @@ def build_examples(
     return examples, cue_vocab
 
 
-# ------------- Debug helper -------------
+# Debug helper 
 
 def debug_print_stats(root: Path | None = None):
     if root is None:
