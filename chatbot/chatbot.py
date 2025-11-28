@@ -184,7 +184,7 @@ Return ONLY:
             improved_text = new_example.get("improved_text", "").strip()
 
             if not improved_text:
-                raise ValueError("Empty improved_text → skip save")
+                raise ValueError("Empty improved_text, skip save")
 
             if improved_text.count(".") > 1:
                 raise ValueError("Too many sentences — looks like advice")
@@ -217,3 +217,26 @@ Return ONLY:
         except Exception as e:
             print("\nCould not parse/save SEAL output:")
             print(e)
+            
+            # 6) AUTO-SEAL RETRAIN
+        seal_count = count_seal_examples(seal_output_path)
+        print(f"\n[SEAL DATA COUNT]: {seal_count} / {SEAL_TRIGGER}")
+
+        if seal_count >= SEAL_TRIGGER:
+            print("\n AUTO-SEAL TRIGGERED — Retraining model...\n")
+
+            subprocess.run(
+                ["python", "-m", "chatbot.train_cue_classifier"],
+                check=True
+            )
+
+            print("\nNew model trained using SEAL data")
+
+            # Clear file after retraining (start fresh batch)
+            seal_output_path.open("w", encoding="utf-8").close()
+            print("SEAL data file cleared\n")
+
+        print("\n" + "="*60 + "\n")
+    
+            
+

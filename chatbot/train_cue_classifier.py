@@ -98,7 +98,7 @@ def train(
     # 1) NLP model (MiniLM)
     nlp = NLPModel()
 
-    # 2) Build tensors (now includes SEAL data ✅)
+    # 2) Build tensors (now includes SEAL data )
     X, Y, vocab = build_tensors(project_root, nlp)
 
     input_dim = X.shape[1]
