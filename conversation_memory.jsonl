@@ -1,0 +1,171 @@
+[
+  {
+    "role": "user",
+    "text": "I’m exhausted and everything feels like too much latelyyy",
+    "paraphrased": "You're feeling overwhelmed and extremely tired right now.",
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T15:42:28.069959"
+  },
+  {
+    "role": "user",
+    "text": "I'm tired of everything and I keep putting things off because they feel impossib",
+    "paraphrased": "I'm tired of everything and I keep putting things off because they feel impossible.",
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T15:52:17.384682"
+  },
+  {
+    "role": "user",
+    "text": "they ceep laughing at me when i answer wrong in the classrpomm am really into droping out",
+    "paraphrased": "They continue laughing at me when I answer incorrectly in the classroom, and I'm seriously considering dropping out.",
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T15:58:56.717333"
+  },
+  {
+    "role": "user",
+    "text": "once i do something wrong or answer iin bad why my classemates laughh at me",
+    "paraphrased": null,
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T16:07:26.578698"
+  },
+  {
+    "role": "user",
+    "text": "once i do something wrong or answer iin bad why my classemates laughh at me",
+    "paraphrased": null,
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T16:08:05.633687"
+  },
+  {
+    "role": "user",
+    "text": "they alwayssss laughedd when answe wrongly in classmates",
+    "paraphrased": null,
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T16:22:48.083062"
+  },
+  {
+    "role": "user",
+    "text": "they alwayssss laughedd when answe wrongly in classmates",
+    "paraphrased": null,
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T16:23:56.987388"
+  },
+  {
+    "role": "user",
+    "text": "I can’t stop thinking about how stupid I sounded today. I feel embarrassed and I just want to hide.",
+    "paraphrased": "I can’t stop thinking about how stupid I sounded today. I feel embarrassed and I just want to hide.",
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T16:42:27.730596"
+  },
+  {
+    "role": "bot",
+    "text": "I understand that your mind might be trying to shield you from stress by pushing you away from challenging tasks. It's natural for us to avoid things that seem too daunting at the moment. Our brains often steer clear of tasks that we associate with discomfort, even if the task itself isn't inherently risky.",
+    "paraphrased": null,
+    "predicted_cues": [
+      "avoidance",
+      "hypervigilance"
+    ],
+    "bot_mode": "therapy",
+    "timestamp": "2025-12-10T16:43:06.225129"
+  },
+  {
+    "role": "user",
+    "text": "i fee very stupidd when the laughedd at my wrongy answer",
+    "paraphrased": null,
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T16:45:04.096419"
+  },
+  {
+    "role": "user",
+    "text": "i feel sadd very muchee i wanna drop out of college",
+    "paraphrased": null,
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T16:54:07.376696"
+  },
+  {
+    "role": "user",
+    "text": "I hate when I try to answeer my professor but the class start laughing at my anser because it was not correct I really feel like coming out this course",
+    "paraphrased": "I feel like abandoning this course because my attempt to answer my professor led to ridicule from classmates.",
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T17:44:48.624106"
+  },
+  {
+    "role": "bot",
+    "text": "When emotions weigh heavily on your shoulders, it's completely understandable to need a moment to breathe and regroup. Remember, you're not the only one who feels this way; many people find themselves seeking a pause when the intensity of their feelings becomes too much to bear. It's important to recognize that sometimes, our minds may resort to avoidance as a way to protect us from immediate discomfort, but it's a temporary shield.",
+    "paraphrased": null,
+    "predicted_cues": [
+      "avoidance",
+      "dissociation",
+      "self-blame",
+      "substance abuse",
+      "withdrawal"
+    ],
+    "bot_mode": "therapy",
+    "timestamp": "2025-12-10T17:46:22.654260"
+  },
+  {
+    "role": "user",
+    "text": "I felt dumb when I answered in class and everyone laughed. Now I just want to avoid speaking again.",
+    "paraphrased": null,
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T17:53:26.481167"
+  },
+  {
+    "role": "user",
+    "text": "I felt dumb when I answered in class and everyone laughed. Now I just want to avoid speaking again.",
+    "paraphrased": "Earlier you said: I felt dumb when I answered in class and everyone laughed. Now I just want to avoid speaking again.",
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T17:53:54.764821"
+  },
+  {
+    "role": "bot",
+    "text": "In moments when your thoughts race and your heart feels heavy, know that it's completely natural to feel on edge. Your mind is simply trying to brace itself for every possible scenario. Remember, experiencing anxiety doesn't reflect on your strength or character; it's a sign that your body is reaching out for comfort and a moment to pause.",
+    "paraphrased": null,
+    "predicted_cues": [
+      "anxiety",
+      "avoidance",
+      "dissociation",
+      "hypervigilance",
+      "self-blame",
+      "substance abuse",
+      "withdrawal"
+    ],
+    "bot_mode": "therapy",
+    "timestamp": "2025-12-10T17:55:55.998045"
+  },
+  {
+    "role": "user",
+    "text": "I felt dumb when I answered in class and everyone laughed. Now I just want to aoid speaking again.",
+    "paraphrased": "Earlier you said: I felt dumb when I answered in class and everyone laughed. Now I just want to avoid speaking again.",
+    "predicted_cues": null,
+    "bot_mode": null,
+    "timestamp": "2025-12-10T18:00:45.735182"
+  },
+  {
+    "role": "bot",
+    "text": "What you're describing can be really unsettling — anxiety often shows up when something matters to you. Many people feel this kind of tension when they're carrying a lot at once. Anxiety is your brain’s alarm system being a little too sensitive — it tries to protect you even when there’s no real danger.\nHere are a couple of gentle steps they can try:\n- Try slow breathing: inhale for 4 seconds, hold for 2, exhale for 6.\n- Name the worry, then add: 'This is a thought, not a prediction.'\n- Set a tiny 3-minute timer and give the task only that amount of effort.\nWhat part of this situation feels the most uncertain to you?",
+    "paraphrased": null,
+    "predicted_cues": [
+      "anxiety",
+      "avoidance",
+      "dissociation",
+      "hypervigilance",
+      "self-blame",
+      "substance abuse",
+      "withdrawal"
+    ],
+    "bot_mode": "therapy",
+    "timestamp": "2025-12-10T18:02:10.210735"
+  }
+]

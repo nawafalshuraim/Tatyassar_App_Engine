@@ -1,43 +1,54 @@
-
 import re
-from typing import List, Dict #for type hints
+from typing import List, Dict
 import torch
-from transformers import AutoTokenizer, AutoModel #for MiniLM transformer
+from transformers import AutoTokenizer, AutoModel
 
-# DEVICE: On Apple Silicon (M1, M2, M3, M4), PyTorch can use the Apple GPU
-# This makes NLP much faster than CPU
-# MPS = “Apple’s version of CUDA”
+# DEVICE SELECTION (Apple MPS preferred)
 def get_device():
-
     if torch.backends.mps.is_available():
         return torch.device("mps")
     return torch.device("cpu")
 
 
-# CLEANING
+# CRISIS FILTERING (Handled before embedding/classification)
+CRISIS_TERMS = [
+    r"\bsuicide\b", r"\bkill myself\b", r"\bkill him\b", r"\bkill her\b",
+    r"\bself harm\b", r"\bself-harm\b", r"\bcutting\b", r"\bI want to die\b",
+    r"\bI don'?t want to live\b"
+]
+
+def detect_crisis(text: str) -> bool:
+    if not isinstance(text, str):
+        return False
+    text = text.lower()
+    return any(re.search(pattern, text) for pattern in CRISIS_TERMS)
+
+
+# TEXT CLEANING (keeps emotional emojis, strips junk)
+SAFE_EMOJIS = ["😢","😭","😔","😞","😟","😡","😠","😨","😖","😣","😩"]
+
 def clean_text(text: str) -> str:
-    
     if not isinstance(text, str):
         return ""
 
+    # keep safe emojis, remove others
+    text = "".join(ch for ch in text if ch.isascii() or ch in SAFE_EMOJIS)
+
     text = text.replace("\n", " ")
     text = re.sub(r"\s+", " ", text).strip()
-    text = re.sub(r"[^\x00-\x7F]+", "", text)
     return text
 
 
-# SENTENCE SPLITTING FOR THE DATASET (LATER TO BE USED)
+# SENTENCE SPLITTING
 def split_sentences(text: str) -> List[str]:
-
     text = clean_text(text)
     parts = re.split(
-        r'(?<=[\.\!\?])\s+|(?=Therapist:)|(?=Client:)',
-        text
+        r'(?<=[\.\!\?])\s+|(?=Therapist:)|(?=Client:)', text
     )
     return [p.strip() for p in parts if len(p.strip()) > 1]
 
 
-# TRANSFORMER MODEL (PRODUCES EMBEDDINGS CAPTURING MEANING/UNDERSTANDING ONLY/ NOT GENERATIVE/ ANSWER WHAT DOES THIS TEXT MEAN IN MATH FORM? OUTPUT: VECTOR OF 384 numbers)
+# MINI LM EMBEDDINGS
 class NLPModel:
 
     def __init__(
@@ -50,10 +61,14 @@ class NLPModel:
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModel.from_pretrained(model_name).to(self.device)
 
-    # EMBEDDINGS
     def encode(self, text: str) -> torch.Tensor:
 
         text = clean_text(text)
+
+        # handle blank or crisis before embedding
+        if text == "" or detect_crisis(text):
+            return torch.zeros(384)  # static fallback vector
+
         tokens = self.tokenizer(
             text,
             return_tensors="pt",
@@ -63,26 +78,14 @@ class NLPModel:
         with torch.no_grad():
             out = self.model(**tokens)
             emb = out.last_hidden_state.mean(dim=1)
+
         return emb.cpu().squeeze(0)
 
     def encode_sentences(self, sentences: List[str]) -> torch.Tensor:
         return torch.stack([self.encode(s) for s in sentences])
 
 
-# SEMANTIC SIMILARITY (1: same meaning, 0: different, -1: opposite)
-def cosine_similarity(a: torch.Tensor, b: torch.Tensor) -> float:
-    return torch.nn.functional.cosine_similarity(a, b, dim=0).item()
-
-
-# SEMANTIC EMOTION VECTORS (NO LEXICON BUT SEMANTIC ANCHOR)
-"""""
-Later:
-- dataset expands them
-- classifier expands them
-- SEAL evolves them
-so we never modify these manually again.
-"""
-
+# SEMANTIC EMOTION VECTORS (CACHED)
 BASE_EMOTIONS = {
     "fear": "fear",
     "sadness": "sad",
@@ -93,25 +96,21 @@ BASE_EMOTIONS = {
     "withdrawal": "withdrawal"
 }
 
-def generate_emotion_vectors(nlp: NLPModel) -> Dict[str, torch.Tensor]:
-    vectors = {}
-    for emotion, seed_word in BASE_EMOTIONS.items():
-        vectors[emotion] = nlp.encode(seed_word)
-    return vectors
+_cached_vectors = None
 
+def get_emotion_vectors(nlp: NLPModel) -> Dict[str, torch.Tensor]:
+    global _cached_vectors
+    if _cached_vectors is None:
+        _cached_vectors = {e: nlp.encode(w) for e, w in BASE_EMOTIONS.items()}
+    return _cached_vectors
 
 def semantic_emotion_scores(text: str, nlp: NLPModel) -> Dict[str, float]:
-    """
-    Computes semantic similarity between text and emotion seed vectors.
-    """
     text_emb = nlp.encode(text)
-    emotion_vectors = generate_emotion_vectors(nlp)
+    emotion_vectors = get_emotion_vectors(nlp)
 
     scores = {}
     for emotion, vector in emotion_vectors.items():
-        scores[emotion] = round(cosine_similarity(text_emb, vector), 4)
+        sim = torch.nn.functional.cosine_similarity(text_emb, vector, dim=0).item()
+        scores[emotion] = round(sim, 4)
 
     return scores
-
-
-

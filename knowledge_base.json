@@ -1,0 +1,324 @@
+{
+  "cue_profiles": {
+
+    "anxiety": {
+      "name": "Anxiety",
+      "short_label": "Worry, tension, and fear about future outcomes.",
+      "validation_templates": [
+        "It makes sense that your body reacts this way when things feel uncertain or high-stakes.",
+        "What you're describing can be really unsettling — anxiety often shows up when something matters to you.",
+        "Feeling on edge is completely understandable when your mind is trying to prepare for every possible outcome."
+      ],
+      "normalization_templates": [
+        "Many people feel this kind of tension when they're carrying a lot at once.",
+        "Your reaction is normal — the mind tends to amplify what feels important or stressful.",
+        "Anxiety doesn’t mean something is wrong with you; it means you're overwhelmed, not broken."
+      ],
+      "psychoeducation_templates": [
+        "Anxiety is your brain’s alarm system being a little too sensitive — it tries to protect you even when there’s no real danger.",
+        "When stress builds up, the nervous system can stay in 'warning mode', which explains the tension you’re feeling.",
+        "Anxiety isn't a sign of weakness; it's the body signaling that it needs reassurance and rest."
+      ],
+      "coping_ideas": [
+        "Try slow breathing: inhale for 4 seconds, hold for 2, exhale for 6.",
+        "Name the worry, then add: 'This is a thought, not a prediction.'",
+        "Set a tiny 3-minute timer and give the task only that amount of effort.",
+        "Ground yourself by naming 5 things you can see around you."
+      ],
+      "reflection_questions": [
+        "What part of this situation feels the most uncertain to you?",
+        "If your anxiety could speak, what would it say it’s trying to protect you from?"
+      ]
+    },
+
+    "avoidance": {
+      "name": "Avoidance",
+      "short_label": "Pulling away from difficult tasks or emotions.",
+      "validation_templates": [
+        "It makes sense to step back when something feels emotionally heavy or overwhelming.",
+        "Avoiding something doesn’t mean you're lazy — it often means your system feels overloaded.",
+        "Your mind may be trying to protect you by keeping you away from stress."
+      ],
+      "normalization_templates": [
+        "Many people avoid tasks when they fear disappointment or feel worn down.",
+        "Avoidance is a common response when something feels too big to face right now.",
+        "You’re not alone — people often step back when emotions feel intense."
+      ],
+      "psychoeducation_templates": [
+        "Avoidance gives short-term relief but keeps the underlying stress in place.",
+        "The brain avoids tasks it associates with discomfort, even if the task itself isn’t dangerous.",
+        "Avoidance is a coping mechanism — it’s your mind choosing short-term safety."
+      ],
+      "coping_ideas": [
+        "Break the task into one tiny step, like opening the file or writing one sentence.",
+        "Set a small 2–3 minute timer to start and allow yourself to stop when it rings.",
+        "Tell yourself: 'I only need to show up, not finish everything.'"
+      ],
+      "reflection_questions": [
+        "What part of the task feels the most uncomfortable or heavy?",
+        "If the task were easier, what would feel different about it?"
+      ]
+    },
+
+    "self-blame": {
+      "name": "Self-blame",
+      "short_label": "Harsh self-judgment and guilt, even for things outside your control.",
+      "validation_templates": [
+        "It sounds like you're carrying a lot of responsibility on your shoulders.",
+        "It makes sense you'd blame yourself when you care about doing things right.",
+        "Holding yourself to a high standard can be exhausting."
+      ],
+      "normalization_templates": [
+        "Many people blame themselves when they feel scared of failure or disappointing others.",
+        "Self-blame is common when you're trying to make sense of something difficult.",
+        "Feeling guilty doesn't automatically mean you caused the problem."
+      ],
+      "psychoeducation_templates": [
+        "Self-blame is often the brain's attempt to create a sense of control after something painful.",
+        "When stress is high, the mind tends to misinterpret events as personal failures.",
+        "Guilt can show up even when you're not actually responsible — it's an emotional response, not a fact."
+      ],
+      "coping_ideas": [
+        "Ask yourself: 'Would I judge a friend as harshly as I'm judging myself?'",
+        "Separate facts from interpretations by writing one neutral sentence about what happened.",
+        "List what was inside your control and what wasn’t."
+      ],
+      "reflection_questions": [
+        "If someone you cared about were in your situation, what would you tell them?",
+        "What part of this blame feels the most painful or heavy?"
+      ]
+    },
+
+    "withdrawal": {
+      "name": "Withdrawal",
+      "short_label": "Pulling away from others due to exhaustion, fear, or emotional overload.",
+      "validation_templates": [
+        "It makes sense to step back when connection feels draining or overwhelming.",
+        "Wanting space can be a sign that your mind needs rest.",
+        "Pulling away doesn’t mean you don’t care — it may mean you're emotionally tired."
+      ],
+      "normalization_templates": [
+        "Many people withdraw when emotions feel confusing or too strong.",
+        "It’s normal to need distance when you’re overwhelmed.",
+        "Social withdrawal can be a temporary way the brain protects itself."
+      ],
+      "psychoeducation_templates": [
+        "Withdrawal is a common response when the nervous system is overstimulated.",
+        "Your mind may be trying to reduce sensory or emotional load.",
+        "Distance can be a protective coping mechanism during stress."
+      ],
+      "coping_ideas": [
+        "Send a simple message like 'thinking of you' to someone safe.",
+        "Sit near someone without needing to talk.",
+        "Choose one tiny interaction today, even if it's a single sentence."
+      ],
+      "reflection_questions": [
+        "What makes connection feel draining right now?",
+        "Is there someone who feels emotionally safe to be around?"
+      ]
+    },
+
+    "hypervigilance": {
+      "name": "Hypervigilance",
+      "short_label": "Being constantly alert, tense, or scanning for threat.",
+      "validation_templates": [
+        "It makes sense that your mind stays on guard when things feel unpredictable or stressful.",
+        "That constant tension is a sign your brain has been trying to protect you.",
+        "Feeling alert like this can be exhausting — your nervous system is working overtime."
+      ],
+      "normalization_templates": [
+        "Many people stay in 'alert mode' after long periods of stress.",
+        "Your reaction is normal when your brain isn't sure what’s safe yet.",
+        "Hypervigilance is a common response to overwhelm or fear."
+      ],
+      "psychoeducation_templates": [
+        "Hypervigilance happens when the body's alarm system stays active even when there’s no danger.",
+        "Stress chemicals can keep the mind scanning for threats long after the stressful event.",
+        "It's not intentional — it's your brain stuck in protective mode."
+      ],
+      "coping_ideas": [
+        "Relax one area of your body at a time (jaw, shoulders, hands).",
+        "Identify one thing in your environment that feels safe or predictable.",
+        "Take a slow breath and remind yourself: 'Right now, I am safe enough.'"
+      ],
+      "reflection_questions": [
+        "What situations make your body tighten the most?",
+        "If your tension could speak, what would it say it's worried about?"
+      ]
+    },
+
+    "flashbacks": {
+      "name": "Flashbacks",
+      "short_label": "Sudden intrusive memories that feel emotionally vivid.",
+      "validation_templates": [
+        "It makes sense that past memories come up strongly when something reminds your mind of danger or stress.",
+        "Flashbacks can be incredibly intense — your reaction is understandable.",
+        "Your body is responding to something it once found overwhelming."
+      ],
+      "normalization_templates": [
+        "Many people experience emotional memories like this during stressful periods.",
+        "Flashbacks don’t mean the event is happening again — just that the memory is loud.",
+        "This is a common reaction when the brain hasn’t fully processed something painful."
+      ],
+      "psychoeducation_templates": [
+        "Flashbacks are the mind replaying an old memory because something today felt similar.",
+        "Your brain is trying to protect you by reminding you of past danger.",
+        "These moments feel real because the emotional memory system activates automatically."
+      ],
+      "coping_ideas": [
+        "Ground yourself by naming 5 objects you can see.",
+        "Touch something textured and focus on the sensation.",
+        "Say out loud: 'This is a memory, not a current event.'"
+      ],
+      "reflection_questions": [
+        "Did anything today remind you of a past experience?",
+        "When the flashback happens, what does your body feel first?"
+      ]
+    },
+
+    "nightmares": {
+      "name": "Nightmares",
+      "short_label": "Distressing dreams that affect mood and sense of safety.",
+      "validation_templates": [
+        "It makes sense that those dreams are sticking with you — nightmares can feel incredibly real.",
+        "What you described can leave anyone feeling shaken afterward.",
+        "Your brain was processing something intense, and the feelings can linger."
+      ],
+      "normalization_templates": [
+        "Many people notice their mood shifts after difficult dreams.",
+        "Nightmares are common when you're under pressure or carrying unresolved feelings.",
+        "The emotional part of the brain stays active during sleep, which explains the intensity."
+      ],
+      "psychoeducation_templates": [
+        "Nightmares often reflect stress, not predictions of the future.",
+        "Your brain may be replaying emotions from the day to make sense of them.",
+        "Dreams become intense when the nervous system hasn’t had enough recovery time."
+      ],
+      "coping_ideas": [
+        "Write down the dream, then imagine changing the ending to something safer.",
+        "Turn on a small light or hold something comforting.",
+        "Take a few slow breaths: inhale 4, exhale 6."
+      ],
+      "reflection_questions": [
+        "Did anything in the dream connect to something you're dealing with right now?",
+        "What emotion stayed with you the most after waking up?"
+      ]
+    },
+
+    "dissociation": {
+      "name": "Dissociation",
+      "short_label": "Feeling numb, detached, or disconnected from reality.",
+      "validation_templates": [
+        "It makes sense that you feel distant — the mind sometimes creates space to protect you.",
+        "Feeling disconnected can be a sign your system is overwhelmed.",
+        "That numbness can show up when emotions feel too big to process at once."
+      ],
+      "normalization_templates": [
+        "Many people experience moments like this during high stress.",
+        "This reaction is more common than people realize — it's a survival response.",
+        "Dissociation is often temporary and not a sign you're losing control."
+      ],
+      "psychoeducation_templates": [
+        "Dissociation happens when the brain reduces emotional load to protect you.",
+        "Your senses may dial down when stress exceeds your emotional capacity.",
+        "This state is a coping mechanism — not a personal failure."
+      ],
+      "coping_ideas": [
+        "Hold something cold or textured to reconnect with your senses.",
+        "Name 3 colors and 3 sounds in your environment.",
+        "Say out loud: 'I’m here, and this is my present moment.'"
+      ],
+      "reflection_questions": [
+        "When you feel disconnected, what usually triggers it?",
+        "What helps you feel more grounded or present?"
+      ]
+    },
+
+    "aggression": {
+      "name": "Anger / Irritation",
+      "short_label": "Feeling irritated, resentful, or emotionally charged.",
+      "validation_templates": [
+        "It makes sense that you feel upset — anger often shows up when something feels unfair or overwhelming.",
+        "That frustration is a signal you're carrying something important.",
+        "Your reaction is understandable when your boundaries or needs feel threatened."
+      ],
+      "normalization_templates": [
+        "Many people experience strong irritability under stress.",
+        "Anger often appears when deeper emotions haven’t been heard.",
+        "This reaction doesn’t make you a bad person — it means something matters to you."
+      ],
+      "psychoeducation_templates": [
+        "Anger is often a secondary emotion covering hurt, fear, or stress.",
+        "The nervous system becomes reactive when it feels cornered or unsupported.",
+        "Your body may be trying to regain control by pushing back."
+      ],
+      "coping_ideas": [
+        "Pause and take one slow breath before responding.",
+        "Clench your fists for 5 seconds and release slowly.",
+        "Ask yourself: 'What emotion might be underneath this anger?'"
+      ],
+      "reflection_questions": [
+        "What triggered this feeling most strongly?",
+        "If your anger could speak, what would it say it needs?"
+      ]
+    },
+
+    "compulsive behaviors": {
+      "name": "Compulsive Behaviors",
+      "short_label": "Repeating actions to reduce anxiety or feel more in control.",
+      "validation_templates": [
+        "It makes sense you'd repeat a behavior if it gives you a sense of safety.",
+        "Your actions show how hard you're trying to feel calm and grounded.",
+        "Compulsions often appear when things feel uncertain or overwhelming."
+      ],
+      "normalization_templates": [
+        "Many people rely on repeated actions to reduce stress.",
+        "Your reaction is normal — the brain loves routines when it feels anxious.",
+        "Compulsive behaviors don't define you; they reflect how you're coping."
+      ],
+      "psychoeducation_templates": [
+        "Compulsions temporarily reduce anxiety, which is why they feel necessary.",
+        "The relief you feel reinforces the cycle — your brain is trying to help, even if imperfectly.",
+        "These behaviors come from a place of wanting control in overwhelming moments."
+      ],
+      "coping_ideas": [
+        "Pause the behavior for 10 seconds and take one slow breath.",
+        "Write down the fear behind the urge.",
+        "Try reducing the number of repetitions by just one."
+      ],
+      "reflection_questions": [
+        "What emotion usually comes right before the urge?",
+        "If you didn’t do the behavior, what do you imagine would happen?"
+      ]
+    },
+
+    "substance abuse": {
+      "name": "Substance Use as Coping",
+      "short_label": "Using substances to escape stress or emotional pain.",
+      "validation_templates": [
+        "It makes sense you'd seek relief when the emotional weight feels unbearable.",
+        "Wanting to numb pain doesn't make you weak — it means you're hurting.",
+        "Your reaction shows you're trying to find a way to get through a difficult moment."
+      ],
+      "normalization_templates": [
+        "Many people turn to substances when they don’t know how else to cope.",
+        "Seeking relief from emotional pain is a common human response.",
+        "You’re not alone — this is something many struggle with silently."
+      ],
+      "psychoeducation_templates": [
+        "Substance use often gives quick relief but creates longer-term difficulty.",
+        "The brain learns to associate substances with escape, making urges stronger.",
+        "These urges come from emotional pain, not from a flaw in who you are."
+      ],
+      "coping_ideas": [
+        "Delay the urge for 5 minutes while doing a grounding exercise.",
+        "Reach out to someone safe before acting on the impulse.",
+        "Hold something cold, focus on breathing, or journal the feeling driving the urge."
+      ],
+      "reflection_questions": [
+        "What usually comes up emotionally right before the urge?",
+        "What kind of support would help you feel safer right now?"
+      ]
+    }
+  }
+}

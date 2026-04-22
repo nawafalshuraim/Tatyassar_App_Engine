@@ -4,21 +4,24 @@ Bridge between dataset and neural network, prepares the data for ML.
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 import json
 
 
-# Data structures 
-"""
-Represents one row of training data.
-"""
+# ==========================
+#       DATA STRUCTURES
+# ==========================
+
 @dataclass
 class CueExample:
+    """
+    Represents one row of training data.
+    """
     example_id: str
-    # Client & Therapist
     text: str
     true_cues: List[str]
     label_indices: List[int]
+
 
 class CueVocab:
     """
@@ -40,7 +43,10 @@ class CueVocab:
         return len(self.cues)
 
 
-# JSON helpers 
+# ==========================
+#       JSON HELPERS
+# ==========================
+
 def _load_json(path: Path):
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
@@ -56,14 +62,14 @@ def _build_id_to_solution(solutions_path: Path) -> Dict[str, Dict]:
     return {item["id"]: item for item in data}
 
 
+# ==========================
+#     VOCAB BUILDING
+# ==========================
+
 def build_cue_vocab(solutions_path: Path) -> CueVocab:
     """
     Scan solutions.json to collect all valid cues.
-    Automatically filters:
-        - single characters
-        - punctuation
-        - empty strings
-        - nonsense tokens
+    Apply basic filtering to remove noise.
     """
     id_to_solution = _build_id_to_solution(solutions_path)
     all_cues: List[str] = []
@@ -73,7 +79,7 @@ def build_cue_vocab(solutions_path: Path) -> CueVocab:
         cues = out.get("true_cues", [])
         all_cues.extend(cues)
 
-    # CLEANING LOGIC 
+    # CLEANING LOGIC
     cleaned = []
     for c in all_cues:
         c = c.strip()
@@ -82,24 +88,25 @@ def build_cue_vocab(solutions_path: Path) -> CueVocab:
             continue  # remove: "a", "c", ",", etc.
 
         if not any(ch.isalpha() for ch in c):
-            continue  # no letters? Remove: "[", "]", " " etc.
+            continue  # remove if no letters
 
         cleaned.append(c)
 
-    # Remove duplicates
-    cleaned = sorted(set(cleaned))
-
+    cleaned = sorted(set(cleaned))  # dedupe
     return CueVocab(cleaned)
 
 
+# ==========================
+#       EXAMPLE BUILDER
+# ==========================
 
 def build_examples(
     challenges_path: Path,
     solutions_path: Path,
-    cue_vocab: CueVocab | None = None,
+    cue_vocab: Optional[CueVocab] = None,
 ) -> Tuple[List[CueExample], CueVocab]:
     """
-    Align challenges.json with solutions.json and create raining objects - CueExample.
+    Align challenges.json with solutions.json and create training objects.
     """
     id_to_challenge = _build_id_to_challenge(challenges_path)
     id_to_solution = _build_id_to_solution(solutions_path)
@@ -112,8 +119,7 @@ def build_examples(
     for ex_id, challenge in id_to_challenge.items():
         solution = id_to_solution.get(ex_id)
         if solution is None:
-            # skip if no solution for this challenge
-            continue
+            continue  # No matching solution → skip
 
         text = challenge["input_text"]
         correct_out = solution.get("correct_output", {})
@@ -132,9 +138,11 @@ def build_examples(
     return examples, cue_vocab
 
 
-# Debug helper 
+# ==========================
+#       DEBUG HELPERS
+# ==========================
 
-def debug_print_stats(root: Path | None = None):
+def debug_print_stats(root: Optional[Path] = None):
     if root is None:
         root = Path(__file__).resolve().parents[1]
 
