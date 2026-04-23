@@ -108,32 +108,18 @@ def humanize_with_phi3(llm: LocalEditModel, data: Dict) -> str:
     # Clean hallucinated system markers
     response = re.sub(r"<\|.*?\|>", "", response).strip()
 
-    strategies = data.get("coping_strategies", [])
     reflection = data.get("reflection_question", "")
 
     # ---------------------------
-    # HARD VALIDATION RULES
+    # VALIDATION RULES
     # ---------------------------
 
-    # 1) Coping steps MUST appear EXACTLY once
-    for step in strategies:
-        if step not in response:
-            return fallback_text(data)
-
-        # Ensure it appears only once
-        if response.count(step) != 1:
-            return fallback_text(data)
-
-    # 2) Reflection question MUST appear AND be the last sentence
-    if reflection not in response:
-        return fallback_text(data)
-
-    # Ensure it is the final line
-    if not response.rstrip().endswith(reflection):
-        return fallback_text(data)
-
-    # 3) Ensure response is not too short
+    # 1) Response must be long enough to be useful
     if len(response.split()) < 10:
+        return fallback_text(data)
+
+    # 2) Reflection question must be present somewhere in the response
+    if reflection and reflection not in response:
         return fallback_text(data)
 
     return response.strip()

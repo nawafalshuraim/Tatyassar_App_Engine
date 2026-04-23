@@ -6,7 +6,6 @@ from pydantic import BaseModel
 from pathlib import Path
 import json
 import torch
-import re
 
 # =============================
 # INTERNAL IMPORTS
@@ -16,7 +15,11 @@ from chatbot.preprocessor import NLPModel, detect_crisis
 from chatbot.cue_classifier_model import CueClassifier
 from chatbot.local_llm import LocalEditModel
 from chatbot.narrative_generator import generate_final_narrative
-from chatbot.chatbot import paraphrase_with_guard, is_valid_input
+from chatbot.chatbot import paraphrase_with_guard
+from chatbot.input_validator import is_valid_input
+from chatbot.knowledge_base import load_kb
+
+load_kb()
 
 
 # =============================
@@ -72,33 +75,6 @@ class ChatRequest(BaseModel):
 
 
 # =============================
-# EXTRA CRISIS PATTERNS (STRONGEST)
-# =============================
-
-CRISIS_PHRASES = [
-    r"kill myself",
-    r"kill my self",
-    r"end my life",
-    r"suicide",
-    r"i want to die",
-    r"i dont want to live",
-    r"i don't want to live",
-    r"no reason to live",
-    r"not wake up",
-    r"never wake up",
-    r"hurt myself",
-    r"self[- ]?harm"
-]
-
-def is_severe_crisis(text: str) -> bool:
-    t = text.lower()
-    if detect_crisis(t):
-        return True
-
-    return any(re.search(p, t) for p in CRISIS_PHRASES)
-
-
-# =============================
 # MAIN ENDPOINT
 # =============================
 
@@ -113,7 +89,7 @@ def chat(req: ChatRequest):
         return {"reply": err}
 
     # 2. CRISIS DETECTION (HIGHEST PRIORITY)
-    if is_severe_crisis(user_text):
+    if detect_crisis(user_text):
         return {
             "reply": (
                 "I'm really glad you told me this. What you're describing sounds very serious, "

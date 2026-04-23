@@ -192,7 +192,7 @@ class LocalEditModel:
         full = self._raw_llm_call(system_msg, user_msg)
         text = full.split("<|assistant|>")[-1]
 
-        # remove line breaks, quotes, trailing junk
-        text = text.split("\n")[0].strip().strip('"').strip("'")
+        # Strip Phi-3 special tokens and trailing whitespace
+        text = re.sub(r"<\|.*?\|>", "", text).strip()
 
         return text or user_msg

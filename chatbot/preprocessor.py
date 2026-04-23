@@ -1,5 +1,5 @@
 import re
-from typing import List, Dict
+from typing import List
 import torch
 from transformers import AutoTokenizer, AutoModel
 
@@ -12,9 +12,21 @@ def get_device():
 
 # CRISIS FILTERING (Handled before embedding/classification)
 CRISIS_TERMS = [
-    r"\bsuicide\b", r"\bkill myself\b", r"\bkill him\b", r"\bkill her\b",
-    r"\bself harm\b", r"\bself-harm\b", r"\bcutting\b", r"\bI want to die\b",
-    r"\bI don'?t want to live\b"
+    r"\bsuicide\b",
+    r"\bkill my ?self\b",
+    r"\bkill him\b",
+    r"\bkill her\b",
+    r"\bself[- ]?harm\b",
+    r"\bcutting\b",
+    r"\bi want to die\b",
+    r"\bi don'?t want to live\b",
+    r"\bno reason to live\b",
+    r"\bend my life\b",
+    r"\bhurt myself\b",
+    r"\bnot wake up\b",
+    r"\bnever wake up\b",
+    r"\bwish i didn'?t exist\b",
+    r"\bdisappear forever\b",
 ]
 
 def detect_crisis(text: str) -> bool:
@@ -31,8 +43,11 @@ def clean_text(text: str) -> str:
     if not isinstance(text, str):
         return ""
 
-    # keep safe emojis, remove others
-    text = "".join(ch for ch in text if ch.isascii() or ch in SAFE_EMOJIS)
+    # keep ASCII, Arabic characters, and safe emojis
+    text = "".join(
+        ch for ch in text
+        if ch.isascii() or '\u0600' <= ch <= '\u06FF' or ch in SAFE_EMOJIS
+    )
 
     text = text.replace("\n", " ")
     text = re.sub(r"\s+", " ", text).strip()
@@ -83,34 +98,3 @@ class NLPModel:
 
     def encode_sentences(self, sentences: List[str]) -> torch.Tensor:
         return torch.stack([self.encode(s) for s in sentences])
-
-
-# SEMANTIC EMOTION VECTORS (CACHED)
-BASE_EMOTIONS = {
-    "fear": "fear",
-    "sadness": "sad",
-    "anger": "anger",
-    "shame": "shame",
-    "anxiety": "anxiety",
-    "dissociation": "dissociation",
-    "withdrawal": "withdrawal"
-}
-
-_cached_vectors = None
-
-def get_emotion_vectors(nlp: NLPModel) -> Dict[str, torch.Tensor]:
-    global _cached_vectors
-    if _cached_vectors is None:
-        _cached_vectors = {e: nlp.encode(w) for e, w in BASE_EMOTIONS.items()}
-    return _cached_vectors
-
-def semantic_emotion_scores(text: str, nlp: NLPModel) -> Dict[str, float]:
-    text_emb = nlp.encode(text)
-    emotion_vectors = get_emotion_vectors(nlp)
-
-    scores = {}
-    for emotion, vector in emotion_vectors.items():
-        sim = torch.nn.functional.cosine_similarity(text_emb, vector, dim=0).item()
-        scores[emotion] = round(sim, 4)
-
-    return scores

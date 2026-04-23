@@ -35,7 +35,7 @@ def is_valid_input(raw_text: str):
     if not text or len(text.strip()) < 3:
         return False, "Input is too short"
 
-    if not re.search(r"[a-zA-Z]", text):
+    if not re.search(r"[a-zA-Z\u0600-\u06FF]", text):
         return False, "Input must contain letters"
 
     if has_gibberish(text):

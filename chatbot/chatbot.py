@@ -16,13 +16,8 @@ from chatbot.local_llm import LocalEditModel
 from chatbot.input_validator import is_valid_input
 from chatbot.recommendation_engine import build_recommendation
 from chatbot.narrative_generator import generate_final_narrative
-from chatbot.knowledge_base import load_kb, get_rules_for_cues, blend_rules
-from chatbot.llm_humanizer import humanize_with_phi3
+from chatbot.knowledge_base import load_kb
 
-
-
-# on startup
-load_kb()
 
 # ==============================
 # CONFIG & CONSTANTS
@@ -154,24 +149,7 @@ def is_acknowledgement(text: str) -> bool:
     return False
 
 
-def is_potential_crisis(text: str) -> bool:
-    # Use preprocessor crisis + extra phrases
-    if detect_crisis(text):
-        return True
-
-    t = text.lower()
-    crisis_patterns = [
-        "don't want to live", "dont want to live",
-        "kill myself", "kill my self",
-        "suicide", "end my life",
-        "no reason to live",
-        "wish i didn't exist", "wish i did not exist",
-        "disappear forever", "not wake up", "never wake up"
-    ]
-    return any(p in t for p in crisis_patterns)
-
-
-def handle_crisis(text: str):
+def handle_crisis():
     print("\n===== CRISIS RESPONSE =====\n")
     print(
         "I'm really glad you told me this. What you're describing sounds very serious,\n"
@@ -189,7 +167,7 @@ def handle_crisis(text: str):
 # MODE HANDLING
 # ==============================
 
-def detect_mode_switch(text: str, current_mode: str) -> Optional[str]:
+def detect_mode_switch(text: str) -> Optional[str]:
     """
     Detects if the user wants to switch between:
       - therapy
@@ -302,6 +280,7 @@ if __name__ == "__main__":
 
     seal_output_path = root / "seal_generated_examples.json"
 
+    load_kb()
     cues = load_vocab(vocab_path)
 
     nlp = NLPModel()
@@ -344,7 +323,7 @@ if __name__ == "__main__":
             empty_streak = 0
 
         # Check for mode switch (before anything else)
-        new_mode = detect_mode_switch(user_text_raw, mode)
+        new_mode = detect_mode_switch(user_text_raw)
         if new_mode and new_mode != mode:
             mode = new_mode
             print(f"\nMode switched to: {mode.upper()}\n")
@@ -358,9 +337,9 @@ if __name__ == "__main__":
             continue
 
         # Crisis check (BEFORE validation/paraphrase)
-        if is_potential_crisis(user_text_raw):
+        if detect_crisis(user_text_raw):
             add_memory_entry(conversation_history, "user", user_text_raw)
-            handle_crisis(user_text_raw)
+            handle_crisis()
             continue
 
         # Input validation
@@ -472,16 +451,6 @@ if __name__ == "__main__":
 
         print("\n[PREDICTED CUES]")
         print(predicted_cues if predicted_cues else "None above thresholds")
-        
-        #DYNAMIC KNOWLEDGE BASE RESPONSE
-        response_data = blend_rules(get_rules_for_cues(predicted_cues))
-        print("\n===== STRUCTURED RESPONSE BEFORE HUMANIZATION =====")
-        print(response_data)
-
-        
-        final_text = humanize_with_phi3(llm, response_data)
-        print("\n===== FINAL HUMANIZED RESPONSE =====")
-        print(final_text)
 
         # No cues → mode-aware neutral response
         if not predicted_cues:
